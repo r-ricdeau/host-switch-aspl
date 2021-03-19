@@ -101,7 +101,7 @@ double aspl_host_fast (void)
 	  weight_dist = hdegree[i];
 	  sum += (distance[i] + 2) * weight_source * weight_dist;
 	  if (distance[i] != -1 && start < i) num_host_combination += weight_source * weight_dist;
-	  if (distance[i] > diameter && weight_dist > 0) diameter = distance[i] + 2;
+	  if (((distance[i] + 2) > diameter) && (weight_dist > 0)) diameter = distance[i] + 2;
 	}
   }
 
