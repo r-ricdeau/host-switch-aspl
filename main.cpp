@@ -3,6 +3,7 @@
 #include <ctime>
 #include <fstream>
 #include <sstream>
+#include <assert.h>
 
 int *hnode;
 int **snode;
@@ -66,13 +67,11 @@ int main (int argc, char **argv) {
 	snode[node[1] - N][degree[node[1] - N]] = node[0];
 	degree[node[1] - N]++;
 	hdegree[node[1] - N]++;
-	//printf("host-switch connect h%d s%d (%d, %d)\n", node[0], node[1] - N, hdegree[node[1] - N], degree[node[1] - N]);
       } else {
 	snode[node[0] - N][degree[node[0] - N]] = node[1];
 	snode[node[1] - N][degree[node[1] - N]] = node[0];
 	degree[node[0] - N]++;
 	degree[node[1] - N]++;
-	//printf("switch-switch connect %d (%d) %d (%d)\n", node[0] - N, degree[node[0] - N], node[1] - N, degree[node[1] - N]);
       }
     } else {
       hnode = new int[N];
