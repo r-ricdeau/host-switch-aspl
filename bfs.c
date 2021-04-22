@@ -54,8 +54,8 @@ double aspl_host_fast (void)
   int i, j, node;
   int start;
   int distance[M];
-  unsigned long int sum = 0;
-  int num_host_combination = 0;
+  unsigned long long int sum = 0;
+  unsigned long long int num_host_combination = 0;
   int diameter = 0;
   int weight_source, weight_dist;
   int n_enqueue;
@@ -101,13 +101,13 @@ double aspl_host_fast (void)
 	  weight_dist = hdegree[i];
 	  sum += (distance[i] + 2) * weight_source * weight_dist;
 	  if (distance[i] != -1 && start < i) num_host_combination += weight_source * weight_dist;
-	  if (((distance[i] + 2) > diameter) && (weight_dist > 0)) diameter = distance[i] + 2;
+	  if ((distance[i] + 2 > diameter) && (weight_dist > 0)) diameter = distance[i] + 2;
 	}
   }
 
   Diameter = diameter;
-  if (num_host_combination != (N * N - N) / 2)
-	return DBL_MAX;
+  if (num_host_combination != (unsigned long long int)(N * (N - 1)) / 2)
+    return DBL_MAX;
   else
-	return (double)(2 * sum) / (double)(N * N - N);
+    return (double)(sum) / (double)(num_host_combination);
 }
