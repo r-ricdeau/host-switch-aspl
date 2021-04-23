@@ -106,7 +106,7 @@ double aspl_host_fast (void)
   }
 
   Diameter = diameter;
-  if (num_host_combination != (unsigned long long int)(N * (N - 1)) / 2)
+  if (2 * num_host_combination != (unsigned long long int)(N) * (unsigned long long int)(N - 1))
     return DBL_MAX;
   else
     return (double)(sum) / (double)(num_host_combination);
