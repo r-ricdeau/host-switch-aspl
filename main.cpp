@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <assert.h>
+#include <climits>
 
 int *hnode;
 int **snode;
@@ -40,16 +41,16 @@ int main (int argc, char **argv) {
     while (getline(iss, tmp, ' ')) {
       sscanf(tmp.c_str(), "%d", &id);      
       if (line == 0) {
-	if (word == 0) {
-	  N = id;
-	} else if (word == 1) {
-	  M = id;
-	} else if (word == 2) {
-	  R = id;
-	}	
+		if (word == 0) {
+		  N = id;
+		} else if (word == 1) {
+		  M = id;
+		} else if (word == 2) {
+		  R = id;
+		}	
       } else {
-	assert(word == 0 || word == 1);
-	node[word] = id;
+		assert(word == 0 || word == 1);
+		node[word] = id;
       }
       word++;
     }    
@@ -57,27 +58,39 @@ int main (int argc, char **argv) {
     if (line > 0) {
       assert((node[0] < N + M) && (node[1] < N + M));
       if (node[0] > node[1]) {
-	id = node[0];
-	node[0] = node[1];
-	node[1] = id;
+		id = node[0];
+		node[0] = node[1];
+		node[1] = id;
       }
       assert(node[1] >= N); 
       if (node[0] < N) {
-	hnode[node[0]] = node[1];
-	snode[node[1] - N][degree[node[1] - N]] = node[0];
-	degree[node[1] - N]++;
-	hdegree[node[1] - N]++;
+		hnode[node[0]] = node[1];
+		snode[node[1] - N][degree[node[1] - N]] = node[0];
+		degree[node[1] - N]++;
+		if (degree[node[1] - N] > R) {
+		  fprintf(stderr, "Error: degree of node %d is too large.\n", node[1]);
+		  exit(-1);
+		}
+		hdegree[node[1] - N]++;
       } else {
-	snode[node[0] - N][degree[node[0] - N]] = node[1];
-	snode[node[1] - N][degree[node[1] - N]] = node[0];
-	degree[node[0] - N]++;
-	degree[node[1] - N]++;
+		snode[node[0] - N][degree[node[0] - N]] = node[1];
+		snode[node[1] - N][degree[node[1] - N]] = node[0];
+		degree[node[0] - N]++;
+		degree[node[1] - N]++;
+		if (degree[node[0] - N] > R) {
+		  fprintf(stderr, "Error: degree of node %d is too large.\n", node[0]);
+		  exit(-1);
+		}
+		if (degree[node[1] - N] > R) {
+		  fprintf(stderr, "Error: degree of node %d is too large.\n", node[1]);
+		  exit(-1);
+		}
       }
     } else {
       hnode = new int[N];
       snode = new int*[M];
       for (int i = 0; i < M; i++) {
-	snode[i] = new int[R];
+		snode[i] = new int[R];
       }
       degree = new int[M];
       hdegree = new int[M];	      
@@ -95,6 +108,7 @@ int main (int argc, char **argv) {
   for (int i = 0; i < M; i++) {
     delete[] snode[i];
   }
+  delete[] snode;
   delete[] degree;
   delete[] hdegree;
 

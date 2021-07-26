@@ -106,8 +106,11 @@ double aspl_host_fast (void)
   }
 
   Diameter = diameter;
-  if (2 * num_host_combination != (unsigned long long int)(N) * (unsigned long long int)(N - 1))
+  if (2 * num_host_combination != (unsigned long long int)(N) * (unsigned long long int)(N - 1)) {
+	fprintf(stderr, "Error: N hosts are not connected.\n");
+	Diameter = INT_MAX;
     return DBL_MAX;
-  else
+  } else {
     return (double)(sum) / (double)(num_host_combination);
+  }
 }
